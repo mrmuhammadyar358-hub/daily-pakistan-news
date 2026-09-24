@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Daily Pakistan News — Admin</title>
+<style>
+body{font-family:Arial,"Noto Nastaliq Urdu",sans-serif;background:#f4f6f8;margin:0;color:#222}
+header{background:#087f3e;color:white;padding:18px;text-align:center}.wrap{max-width:850px;margin:20px auto;padding:0 14px}
+.box{background:white;border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 2px 10px #0001}
+input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
+textarea{min-height:140px;resize:vertical}button{border:0;border-radius:8px;padding:12px 18px;font-size:16px;font-weight:bold;cursor:pointer;background:#087f3e;color:white;margin:4px}
+.danger{background:#c62828}.secondary{background:#555}.row{display:flex;gap:10px}.row>*{flex:1}.news{border-top:1px solid #eee;padding:14px 0}.news h3{margin:0 0 6px}.muted{color:#777;font-size:13px}.hidden{display:none}.msg{padding:10px;border-radius:8px;background:#eef7f1;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header><h2>📰 Daily Pakistan News — Admin Dashboard</h2></header>
+<div class="wrap">
+<div id="loginBox" class="box">
+<h3>Admin Login</h3>
+<input id="email" type="email" placeholder="Admin email">
+<input id="password" type="password" placeholder="Password">
+<button id="loginBtn">Login</button><div id="loginMsg"></div>
+</div>
+
+<div id="dash" class="hidden">
+<div class="box">
+<div class="row"><h3 style="flex:1">Add / Edit News</h3><button class="secondary" id="logoutBtn">Logout</button></div>
+<div id="msg"></div>
+<input id="title" placeholder="خبر کا عنوان">
+<select id="category"><option>پاکستان</option><option>دنیا</option><option>کھیل</option><option>کاروبار</option><option>ٹیکنالوجی</option><option>تفریح</option></select>
+<input id="image" placeholder="Image URL (اختیاری)">
+<textarea id="content" placeholder="خبر کی تفصیل"></textarea>
+<button id="publishBtn">Publish News</button><button id="cancelBtn" class="secondary hidden">Cancel Edit</button>
+</div>
+<div class="box"><h3>Published News</h3><div id="list">Loading...</div></div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let editId=null;
+
+const $=id=>document.getElementById(id);
+async function init(){
+ const {data:{session}}=await db.auth.getSession();
+ show(session);
+}
+function show(session){
+ $("loginBox").classList.toggle("hidden",!!session);
+ $("dash").classList.toggle("hidden",!session);
+ if(session) loadList();
+}
+$("loginBtn").onclick=async()=>{
+ $("loginMsg").textContent="Logging in...";
+ const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});
+ $("loginMsg").textContent=error?error.message:"";
+ if(!error) show((await db.auth.getSession()).data.session);
+};
+$("logoutBtn").onclick=async()=>{await db.auth.signOut();show(null);};
+$("publishBtn").onclick=async()=>{
+ const title=$("title").value.trim(), content=$("content").value.trim();
+ if(!title||!content){$("msg").textContent="عنوان اور خبر کی تفصیل لازمی ہے۔";return;}
+ const payload={title,category:$("category").value,image_url:$("image").value.trim()||null,content};
+ let result=editId?await db.from("news").update(payload).eq("id",editId):await db.from("news").insert(payload);
+ if(result.error){$("msg").textContent=result.error.message;return;}
+ $("msg").textContent=editId?"خبر update ہو گئی۔":"خبر publish ہو گئی۔";
+ clearForm();loadList();
+};
+$("cancelBtn").onclick=clearForm;
+function clearForm(){editId=null;$("title").value="";$("image").value="";$("content").value="";$("cancelBtn").classList.add("hidden");$("publishBtn").textContent="Publish News";}
+async function loadList(){
+ const {data,error}=await db.from("news").select("*").order("created_at",{ascending:false});
+ if(error){$("list").textContent=error.message;return;}
+ $("list").innerHTML=data.map(n=>`<div class="news"><h3>${esc(n.title)}</h3><div class="muted">${esc(n.category)} — ${new Date(n.created_at).toLocaleString("ur-PK")}</div><p>${esc(n.content).slice(0,180)}...</p><button onclick='editNews(${JSON.stringify(n)})'>Edit</button><button class="danger" onclick="deleteNews('${n.id}')">Delete</button></div>`).join("")||"ابھی کوئی خبر نہیں۔";
+}
+window.editNews=n=>{$("title").value=n.title;$("category").value=n.category;$("image").value=n.image_url||"";$("content").value=n.content;editId=n.id;$("publishBtn").textContent="Update News";$("cancelBtn").classList.remove("hidden");scrollTo(0,0);};
+window.deleteNews=async id=>{if(!confirm("یہ خبر delete کرنی ہے؟"))return;const {error}=await db.from("news").delete().eq("id",id);if(error)alert(error.message);else loadList();};
+function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+db.auth.onAuthStateChange((_event,session)=>show(session));init();
+</script>
+</body>
+</html>
