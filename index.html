@@ -1,1 +1,296 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Pakistan News</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, "Noto Nastaliq Urdu", sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+
+    header {
+      background: #087f3e;
+      color: white;
+      padding: 18px 6%;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .tagline {
+      font-size: 14px;
+      opacity: .9;
+    }
+
+    nav {
+      background: #056b34;
+      padding: 12px 6%;
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      white-space: nowrap;
+      font-weight: bold;
+    }
+
+    .breaking {
+      background: #d71920;
+      color: white;
+      padding: 10px 6%;
+      font-weight: bold;
+    }
+
+    .container {
+      width: 88%;
+      max-width: 1200px;
+      margin: 25px auto;
+    }
+
+    .hero {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: #087f3e;
+    }
+
+    .hero p {
+      line-height: 2;
+      color: #555;
+    }
+
+    .section-title {
+      border-right: 5px solid #087f3e;
+      padding-right: 10px;
+      margin-bottom: 18px;
+      font-size: 25px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .card-image {
+      height: 170px;
+      background: linear-gradient(135deg, #087f3e, #1ca65a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 45px;
+    }
+
+    .card-content {
+      padding: 18px;
+    }
+
+    .category {
+      color: #087f3e;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 40px;
+      background: #123b27;
+      color: white;
+      text-align: center;
+      padding: 25px;
+    }
+
+    @media (max-width: 800px) {
+      .news-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .top {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        width: 94%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="top">
+      <div>
+        <div class="logo">Daily Pakistan News</div>
+        <div class="tagline">پاکستان اور دنیا کی اہم خبریں</div>
+      </div>
+
+      <div>📰 تازہ ترین خبریں</div>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#">ہوم</a>
+    <a href="#">پاکستان</a>
+    <a href="#">دنیا</a>
+    <a href="#">کھیل</a>
+    <a href="#">کاروبار</a>
+    <a href="#">ٹیکنالوجی</a>
+    <a href="#">تفریح</a>
+  </nav>
+
+  <div class="breaking">
+    🔴 بریکنگ نیوز: Daily Pakistan News میں خوش آمدید
+  </div>
+
+  <main class="container">
+
+    <section class="hero">
+      <h1>Daily Pakistan News</h1>
+      <p>
+        پاکستان، دنیا، کھیل، کاروبار اور ٹیکنالوجی کی اہم خبریں
+        ایک ہی جگہ پر۔ ہماری ویب سائٹ پر تازہ معلومات اور اہم
+        خبروں کے لیے وزٹ کرتے رہیں۔
+      </p>
+    </section>
+
+    <h2 class="section-title">تازہ ترین خبریں</h2>
+
+    <section class="news-grid">
+
+      <article class="card">
+        <div class="card-image">🇵🇰</div>
+        <div class="card-content">
+          <div class="category">پاکستان</div>
+          <h3>پاکستان کی اہم تازہ خبر</h3>
+          <p>
+            یہاں آپ اپنی تازہ پاکستان نیوز کی تفصیل شامل کر سکتے ہیں۔
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">🌍</div>
+        <div class="card-content">
+          <div class="category">دنیا</div>
+          <h3>دنیا بھر سے اہم خبریں</h3>
+          <p>
+            عالمی سطح پر ہونے والی اہم پیش رفت یہاں شائع کریں۔
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">⚽</div>
+        <div class="card-content">
+          <div class="category">کھیل</div>
+          <h3>کھیلوں کی تازہ ترین خبریں</h3>
+          <p>
+            کرکٹ، فٹبال اور دیگر کھیلوں کی خبریں یہاں شامل کریں۔
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">💼</div>
+        <div class="card-content">
+          <div class="category">کاروبار</div>
+          <h3>کاروبار اور معیشت</h3>
+          <p>
+            کاروباری دنیا اور معیشت سے متعلق اہم معلومات۔
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">💻</div>
+        <div class="card-content">
+          <div class="category">ٹیکنالوجی</div>
+          <h3>ٹیکنالوجی کی تازہ خبریں</h3>
+          <p>
+            نئی ٹیکنالوجی، موبائل، AI اور انٹرنیٹ کی خبریں۔
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">🎬</div>
+        <div class="card-content">
+          <div class="category">تفریح</div>
+          <h3>شوبز اور تفریح</h3>
+          <p>
+            فلم، ڈرامہ اور شوبز کی تازہ معلومات۔
+          </p>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Daily Pakistan News — All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
